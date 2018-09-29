@@ -16,13 +16,22 @@ contract CertificateManagement{
         bool uploadPermission;
     }
     
+    struct CheckSharer{
+        int check;
+    }
+    
+    struct User{
+        uint[] userCertificates; // list of certificate
+        mapping (uint => mapping ( address => uint)) shareCertificate; // check sharer
+    }
+    
     struct Certificate{
         uint id;
         address owner;
         string name;
         address createBy;
         string certificateIPFS;
-        bool checkPublic;
+        int checkPublic;
     }
     
     constructor() public payable{
@@ -33,12 +42,10 @@ contract CertificateManagement{
         superUserList[msg.sender].uploadPermission = true;
     }
 
-    
+    mapping (uint => Certificate) certificateList;
     mapping (address => SuperUser) superUserList;
-    mapping (address => Certificate[]) userCertificates;
-    mapping (uint => address[]) addressPermissionList;
-    //mapping (uint => Certificate) certificateList;
-    mapping (address => mapping (uint => Certificate)) sharedCertificatesList;
+    mapping (address => User) userList;
+    mapping (address => uint[]) shareList;
     
     // check super user
     modifier superUserAuthority(){
@@ -54,13 +61,6 @@ contract CertificateManagement{
       _;
     }
     
-    // check address has Certificate permission
-    modifier addressPermissionAuthority(uint _idOfCertificate){
-        for (uint i = 0; i < addressPermissionList[_idOfCertificate].length; i++) {
-            require(addressPermissionList[_idOfCertificate][i] == msg.sender);
-        }
-        _;
-    }
 
     // ---------------- register super user -----------------------------------
     
@@ -76,8 +76,9 @@ contract CertificateManagement{
     
     function uploadCertificate(address _owner, string _name, string _certificateIPFS) public superUserAuthorityPermission{
         uint _id = CertificateID + 1;
-        Certificate memory cert = Certificate(_id ,_owner, _name, msg.sender, _certificateIPFS, false);
-        userCertificates[_owner].push(cert);
+        Certificate memory cert = Certificate(_id ,_owner, _name, msg.sender, _certificateIPFS, 0);
+        certificateList[_id] = cert;
+        userList[_owner].userCertificates.push(_id);
     }
     
     // -----------------get Super user information ----------------------------
@@ -86,41 +87,65 @@ contract CertificateManagement{
             return (superUserList[_address].createBy, superUserList[_address].nameOfUser, superUserList[_address].position, superUserList[_address].uploadPermission);
     }
     
-    // function getNormalUser() view public returns(string _listCertificate){
-    //     Certificate[] memory temp = userCertificates[msg.sender];
-    //     for(uint i = 0; i < temp.length; i++){
-    //         string storage certs = uintToString(temp[i].id);
-    //         //+ "+" +temp[i].owner + "+" +temp[i].name + "+" +temp[i].createBy + "+" +temp[i].certificateIPFS;
-    //         _listCertificate = _listCertificate.toSlice().concat(certs.toSlice());
-    //     }
-    // }
-    
     
     // --------------------------- get Certificate -----------------------------
-    function getCertificate(uint _idOfCertificate, address _CertificateOwnerAddress)
-    public addressPermissionAuthority(_idOfCertificate)
+    function getCertificate(uint _idOfCertificate, address _CertificateOwnerAddress) public
     view returns(uint id, address owner, string name, address createBy, string certificateIPFS){
-        Certificate[] memory temp = userCertificates[_CertificateOwnerAddress];
-        for ( uint i = 0; i < temp.length; i++){
-            if(temp[i].id == _idOfCertificate){
-                return (temp[i].id, temp[i].owner, temp[i].name, temp[i].createBy, temp[i].certificateIPFS);
+            Certificate memory temp = certificateList[_idOfCertificate];
+            return (temp.id, temp.owner, temp.name, temp.createBy, temp.certificateIPFS);
+    }
+    
+    
+    function userCerts(uint _idOfCertificate, address _CertificateOwnerAddress) public
+    view returns(string numbers){
+        if (_CertificateOwnerAddress == msg.sender || superUserList[_CertificateOwnerAddress].createBy == msg.sender || userList[_CertificateOwnerAddress].shareCertificate[_idOfCertificate][msg.sender] == 1){
+
+            for (uint i = 0; i < userList[_CertificateOwnerAddress].userCertificates.length; i++){
+                 string memory temp = uintToString(userList[_CertificateOwnerAddress].userCertificates[i]);
+                 numbers = numbers.toSlice().concat(temp.toSlice());
             }
+            return getCertificate( _idOfCertificate, _CertificateOwnerAddress);
+            
         }
+        revert();
     }
     
     // ------------------------------- share ----------------------------------
     
-    function shareCertificate(address _receiver, uint _idCertificate) public {
-        //require(userCertificates[msg.sender][_idCertificate].id > 0);
-        Certificate memory temp = userCertificates[msg.sender][_idCertificate];
-        sharedCertificatesList[_receiver][_idCertificate] = temp;
+    function shareCert(address _receiver, uint _idOfCertificate) public {
+        userList[msg.sender].shareCertificate[_idOfCertificate][_receiver] = 1;
+        shareList[_receiver].push(_idOfCertificate);
     }
     
-     function unShareCertificate(address _receiver, uint _idCertificate) public {
-        require(userCertificates[msg.sender][_idCertificate].id > 0);
-        delete sharedCertificatesList[_receiver][_idCertificate];
+    function unSshareCert(address _receiver, uint _idOfCertificate) public {
+        userList[msg.sender].shareCertificate[_idOfCertificate][_receiver] = 0;
+        for ( uint i = 0; i < shareList[_receiver].length; i++){
+            if(shareList[_receiver][i] == _idOfCertificate){
+                delete shareList[_receiver][i];
+                break;
+            }
+        }
     }
     
+    // function checkPublicl(int _check) public{
+    //     userList[msg.sender].checkPublic = _check;
+    // }
+    
+    function uintToString(uint v) constant returns (string str) {
+    uint maxlength = 100;
+    bytes memory reversed = new bytes(maxlength);
+    uint i = 0;
+    while (v != 0) {
+        uint remainder = v % 10;
+        v = v / 10;
+        reversed[i++] = byte(48 + remainder);
+    }
+    bytes memory s = new bytes(i);
+    for (uint j = 0; j < i; j++) {
+        s[j] = reversed[i - j - 1];
+    }
+    str = string(s);
+}
     
     
 }
