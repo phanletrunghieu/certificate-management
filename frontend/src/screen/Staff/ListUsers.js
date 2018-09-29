@@ -42,12 +42,17 @@ export default class ListUsers extends Component {
             container: {
                 width: "80%",
                 minWidth: 1000,
-                margin: "30px auto 0"
+                margin: "30px auto 0",
+                backgroundColor: "rgba(255, 255, 255, 0.35)",
             },
             fab: {
                 position: "absolute",
                 bottom: 20,
                 right: 20
+            },
+            tableCell: {
+                borderBottom: "1px rgba(255, 255, 255, 0.4) solid",
+                fontSize: 15
             }
         }
 
@@ -65,10 +70,10 @@ export default class ListUsers extends Component {
                     <TableBody>
                         {this.state.users.map((user, index) => (
                             <TableRow key={index}>
-                                <TableCell component="th" scope="row">{user.name}</TableCell>
-                                <TableCell>{user.address}</TableCell>
-                                <TableCell>{user.date_created}</TableCell>
-                                <TableCell>
+                                <TableCell component="th" scope="row" style={styles.tableCell}>{user.name}</TableCell>
+                                <TableCell style={styles.tableCell}>{user.address}</TableCell>
+                                <TableCell style={styles.tableCell}>{user.date_created}</TableCell>
+                                <TableCell style={styles.tableCell}>
                                     <IconButton>
                                         <DeleteIcon />
                                     </IconButton>

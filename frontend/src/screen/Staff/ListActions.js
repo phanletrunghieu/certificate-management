@@ -17,7 +17,8 @@ export default class ListActions extends Component {
     render() {
         let styles = {
             gridList: {
-                width: "80%",
+                width: "50%",
+                minWidth: 500,
                 margin: "30px auto 0",
                 lineHeight: "160px",
                 textAlign: "center",
@@ -25,37 +26,40 @@ export default class ListActions extends Component {
             tile: {
                 height: "100%",
                 width: "100%",
-                backgroundColor: "#4932B3",
+                backgroundColor: "rgba(255, 255, 255, 0.35)",
                 color: "#fff",
                 fontSize: 20,
             },
         }
         return (
             <div>
-                <GridList cellHeight={160} style={styles.gridList} cols={5}>
+                <GridList cellHeight={160} style={styles.gridList} cols={6}>
                     <GridListTile cols={3}>
                         <ButtonBase
                             focusRipple
                             style={styles.tile}
+                            className="hv-zoom"
                             onClick={()=>browserHistory.push("/staff/accounts")}
                         >
                             Accounts
                         </ButtonBase>
                     </GridListTile>
-                    <GridListTile cols={2}>
+                    <GridListTile cols={3}>
                         <ButtonBase
                             focusRipple
                             style={styles.tile}
+                            className="hv-zoom"
                             onClick={()=>browserHistory.push("/staff/certificates")}
                         >
                             Certificates
                         </ButtonBase>
                     </GridListTile>
-                    <GridListTile cols={2}>
+                    <GridListTile cols={6}>
                         <ButtonBase
                             focusRipple
                             style={styles.tile}
-                            onClick={()=>browserHistory.push("/staff/certificates")}
+                            className="hv-zoom"
+                            onClick={()=>browserHistory.push("/staff/confirms")}
                         >
                             Confirm
                         </ButtonBase>

@@ -14,6 +14,7 @@ import ListUsers from "./ListUsers"
 import ListActions from "./ListActions"
 import SearchUsers from "./Certificate/Search"
 import Certificates from "./Certificate/Certificates"
+import Confirm from "./Confirm/ListConfirm"
 import Appbar from '../../components/Appbar';
 
 
@@ -21,7 +22,8 @@ export default class StaffScreen extends Component {
   render() {
     const styles = {
       container: {
-        paddingTop: 64
+        paddingTop: 64,
+        height: "calc(100vh - 64px)",
       },
       root: {
         flexGrow: 1,
@@ -39,13 +41,14 @@ export default class StaffScreen extends Component {
     
 
     return (
-      <div style={styles.container}>
-        <Appbar isHome={isHome}/>
+      <div style={styles.container} className="main-bg">
+        <Appbar isHome={isHome} rootPath="/staff"/>
         <Switch>
           <Route exact path="/staff" component={ListActions} />
           <Route exact path="/staff/accounts" component={ListUsers} />
           <Route exact path="/staff/certificates" component={SearchUsers} />
           <Route path="/staff/certificates/:address" component={Certificates} />
+          <Route exact path="/staff/confirms" component={Confirm} />
         </Switch>
       </div>
     )

@@ -12,3 +12,12 @@ body {
   background: linear-gradient(135deg, #0c45a3 0%,#6f008b 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0c45a3', endColorstr='#6f008b',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
+
+.hv-zoom{
+  transition: 300ms all cubic-bezier(0.075, 0.82, 0.165, 1);
+  opacity: 1;
+}
+.hv-zoom:hover{
+  transform: scale(1.2);
+  opacity: 0.6;
+}
