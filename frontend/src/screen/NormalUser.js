@@ -25,8 +25,6 @@ const styles =({
     color: 'inherit',
   },
   inputS: {
-    position: 'absolute',
-    right: 150,
     top: 18,
     color: 'inherit',
     size: 30,
@@ -34,8 +32,8 @@ const styles =({
   rightpage:{
     display:"inline-block",
     backgroundColor: "#FAFAFA",
-    height: "100vh",
-    width: "calc(75vw - 15px)",
+    height: "calc(100vh - 64px)",
+    width: "calc(75vw - 25px)",
     verticalAlign: "top",
   },
   page:{
@@ -45,9 +43,10 @@ const styles =({
     position: 'relative',
     display:"inline-block",
     backgroundColor: "grey",
-    height: "100vh",
+    height: "calc(100vh - 64px)",
     width: "25vw",
     verticalAlign: "top",
+    padding: 5,
   },
   labels:{
     display:"inline-block",
@@ -73,49 +72,42 @@ export default class UserNormal extends Component {
     return (
       <div>
         <AppBar position="fixed">
-               <Toolbar>
-                <div style={styles.labels} > Address Owner </div> 
-                 <Input
-                        placeholder="Enter address to share"
-                       // disableUnderline
-                        style={styles.input}
-                        inputProps={{
-                        'aria-label': 'Description',
-                       }}
-                   />
-                  <Button color="inherit" style={styles.button}>
-                    <ShareIcon/>
-                  </Button>
+          <Toolbar>
+            <div style={styles.labels} > Address Owner </div> 
+            <Input
+              placeholder="Enter address to share"
+              // disableUnderline
+              style={styles.input}
+              inputProps={{
+                'aria-label': 'Description',
+              }}
+            />
+            <Button color="inherit" style={styles.button}>
+              <ShareIcon/>
+            </Button>
 
-              </Toolbar>
-          </AppBar>  
+          </Toolbar>
+        </AppBar>  
         <div style={styles.page}>
-            <div style={styles.leftpage} >
-                    <Input
-                        placeholder="Search....."
-                        //disableUnderline
-                        style={styles.inputS}
-                        inputProps={{
-                        'aria-label': 'Description',
-                       }}
-                   />
+          <div style={styles.leftpage} >
+            <Input
+              placeholder="Search....."
+              //disableUnderline
+              style={styles.inputS}
+              inputProps={{
+                'aria-label': 'Description',
+              }}
+            />
 
-                   
-                  <Button color="inherit" variant="contained" style={styles.button} >
-                    <SearchIcon/>
-                  </Button>
-         
-            </div>
- 
- 
- 
-            <div style={styles.rightpage} >
-         
-               <Certificate style={styles.componentss} image="http://cafefcdn.com/thumb_w/650/2017/that-vaou-1494304227253.png" text="bằng lái xe"/>
-           
-               <Certificate style={styles.componentss} image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqdj4ohtcHPi1KSATYtnpvXHNHC5asfYeZfNKQrSQNEhwSmXdn" text="cmnd"/>
-                       
-            </div>
+                  
+            <Button color="inherit" variant="contained" style={styles.button} >
+              <SearchIcon/>
+            </Button>
+          </div>
+          <div style={styles.rightpage} >
+            <Certificate style={styles.componentss} image="http://cafefcdn.com/thumb_w/650/2017/that-vaou-1494304227253.png" text="bằng lái xe"/>
+            <Certificate style={styles.componentss} image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqdj4ohtcHPi1KSATYtnpvXHNHC5asfYeZfNKQrSQNEhwSmXdn" text="cmnd"/>          
+          </div>
         </div>    
       </div>
     )

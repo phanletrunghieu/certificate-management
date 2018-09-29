@@ -40,18 +40,18 @@ export default class Certificate extends Component {
   render() {
     return (
       // variant="fab" nền button
-   <Card style={{...styles.card, ...this.props.style}}>
-      <Button  color="black" style={styles.button}>
-        <ShareIcon/>
-      </Button>
+      <Card style={{...styles.card, ...this.props.style}}>
+        <Button  color="black" style={styles.button}>
+          <ShareIcon/>
+        </Button>
 
-     <CardActionArea> 
-       <img style={styles.media} src={this.props.image}/> 
-        <div style={styles.text}>
-          {this.props.text}
-        </div>
-     </CardActionArea>
-    </Card>
+        <CardActionArea>
+          <img style={styles.media} src={this.props.image}/> 
+          <div style={styles.text}>
+            {this.props.text}
+          </div>
+        </CardActionArea>
+      </Card>
       
     )
   }

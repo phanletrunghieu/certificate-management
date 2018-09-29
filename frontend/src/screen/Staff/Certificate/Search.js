@@ -32,7 +32,8 @@ export default class SearchUser extends Component {
     render() {
         let styles = {
             container: {
-                width: "80%",
+                width: "40%",
+                minWidth: 300,
                 margin: "auto",
                 height: "calc(100vh - 64px)",
                 display: "table"
@@ -45,6 +46,9 @@ export default class SearchUser extends Component {
                 textTransform: "none",
                 display: "block",
                 margin: "20px auto 0",
+            },
+            input: {
+                color: "#fff"
             }
         }
         return (
@@ -64,6 +68,14 @@ export default class SearchUser extends Component {
                             if (e.key == 'Enter') {
                                 this.search()
                             }
+                        }}
+                        style={styles.input}
+                        classes={{
+                            underline: {
+                                '&:before': {
+                                    borderBottomColor: "white",
+                                },
+                            },
                         }}
                     />
                     <Button
