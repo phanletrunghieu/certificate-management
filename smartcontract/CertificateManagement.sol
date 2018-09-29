@@ -68,6 +68,12 @@ contract CertificateManagement{
         require(msg.sender == certificateList[_idOfCertificate].owner);
         _;
     }
+        
+    function superUserAuthorityFunc(address _CertificateOwnerAddress) public view returns(int check){
+        SuperUser memory authority = superUserList[_CertificateOwnerAddress];
+        require( authority.createBy != 0);
+        return check = 1;
+    }
 
     // ---------------- register super user -----------------------------------
     
