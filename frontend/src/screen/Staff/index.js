@@ -13,6 +13,7 @@ import browserHistory from '../../utils/browserHistory';
 import ListUsers from "./ListUsers"
 import ListActions from "./ListActions"
 import SearchUsers from "./Certificate/Search"
+import Certificates from "./Certificate/Certificates"
 import Appbar from '../../components/Appbar';
 
 
@@ -44,6 +45,7 @@ export default class StaffScreen extends Component {
           <Route exact path="/staff" component={ListActions} />
           <Route exact path="/staff/accounts" component={ListUsers} />
           <Route exact path="/staff/certificates" component={SearchUsers} />
+          <Route path="/staff/certificates/:address" component={Certificates} />
         </Switch>
       </div>
     )

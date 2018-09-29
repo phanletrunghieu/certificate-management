@@ -51,6 +51,15 @@ export default class ListActions extends Component {
                             Certificates
                         </ButtonBase>
                     </GridListTile>
+                    <GridListTile cols={2}>
+                        <ButtonBase
+                            focusRipple
+                            style={styles.tile}
+                            onClick={()=>browserHistory.push("/staff/certificates")}
+                        >
+                            Confirm
+                        </ButtonBase>
+                    </GridListTile>
                 </GridList>
             </div>
         )

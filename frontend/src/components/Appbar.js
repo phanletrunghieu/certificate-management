@@ -18,7 +18,8 @@ export default class Appbar extends Component {
                 <IconButton style={styles.menuButton} color="inherit" aria-label="Menu">
                 {
                     this.props.isHome ?
-                    <MenuIcon />
+                    // <MenuIcon />
+                    null
                     :
                     <ArrowBackIcon onClick={()=>{
                         browserHistory.length === 0 ? browserHistory.push("/staff") : browserHistory.goBack()

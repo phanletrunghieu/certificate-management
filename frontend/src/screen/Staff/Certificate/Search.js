@@ -5,15 +5,36 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
 import SearchIcon from '@material-ui/icons/Search';
+import browserHistory from '../../../utils/browserHistory';
 
 export default class SearchUser extends Component {
+    state = {
+        address: "",
+        errorMessage: ""
+    }
+
+    constructor(props){
+        super(props)
+
+        this.search = this.search.bind(this)
+    }
+
+    search(){
+        if(this.state.address === ""){
+            return this.setState({errorMessage: "Please fill the address!"})
+        }
+
+        browserHistory.push("/staff/certificates/"+this.state.address)
+    }
+    
     render() {
         let styles = {
             container: {
                 width: "80%",
                 margin: "auto",
-                height: "100vh",
+                height: "calc(100vh - 64px)",
                 display: "table"
             },
             middle: {
@@ -37,11 +58,29 @@ export default class SearchUser extends Component {
                                 <SearchIcon />
                             </InputAdornment>
                         }
+                        value={this.state.address}
+                        onChange={e=>this.setState({address: e.target.value})}
+                        onKeyPress={e=>{
+                            if (e.key == 'Enter') {
+                                this.search()
+                            }
+                        }}
                     />
-                    <Button variant="contained" color="primary" style={styles.button}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        style={styles.button}
+                        onClick={this.search}
+                    >
                         Show
                     </Button>
                 </div>
+                <Snackbar
+                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    open={this.state.errorMessage !== ""}
+                    onClose={()=>this.setState({errorMessage: ""})}
+                    message={this.state.errorMessage}
+                />
             </div>
         )
     }
