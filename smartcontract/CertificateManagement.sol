@@ -6,6 +6,8 @@ import "github.com/Arachnid/solidity-stringutils/strings.sol";
 
 contract CertificateManagement{
     
+    using strings for *;
+    
     uint CertificateID = 0;
     address ownerOfSmartContract;
     
@@ -61,6 +63,11 @@ contract CertificateManagement{
       _;
     }
     
+    // owner Aauthority
+    modifier ownerAuthority(uint _idOfCertificate){
+        require(msg.sender == certificateList[_idOfCertificate].owner);
+        _;
+    }
 
     // ---------------- register super user -----------------------------------
     
@@ -89,35 +96,50 @@ contract CertificateManagement{
     
     
     // --------------------------- get Certificate -----------------------------
-    function getCertificate(uint _idOfCertificate, address _CertificateOwnerAddress) public
+    function getUserCertificate(uint _idOfCertificate, address _CertificateOwnerAddress) public
     view returns(uint id, address owner, string name, address createBy, string certificateIPFS){
+        if (_CertificateOwnerAddress == msg.sender || superUserList[_CertificateOwnerAddress].createBy == msg.sender || userList[_CertificateOwnerAddress].shareCertificate[_idOfCertificate][msg.sender] == 1){
             Certificate memory temp = certificateList[_idOfCertificate];
             return (temp.id, temp.owner, temp.name, temp.createBy, temp.certificateIPFS);
+        }
+        revert();
     }
     
-    
-    function userCerts(uint _idOfCertificate, address _CertificateOwnerAddress) public
-    view returns(string numbers){
+    function userCerts(uint _idOfCertificate, address _CertificateOwnerAddress) public view returns(string numbers){
         if (_CertificateOwnerAddress == msg.sender || superUserList[_CertificateOwnerAddress].createBy == msg.sender || userList[_CertificateOwnerAddress].shareCertificate[_idOfCertificate][msg.sender] == 1){
 
             for (uint i = 0; i < userList[_CertificateOwnerAddress].userCertificates.length; i++){
                  string memory temp = uintToString(userList[_CertificateOwnerAddress].userCertificates[i]);
                  numbers = numbers.toSlice().concat(temp.toSlice());
             }
-            return getCertificate( _idOfCertificate, _CertificateOwnerAddress);
+            return numbers;
             
         }
         revert();
     }
     
+    function getSharedCertificate(uint _idOfCertificate) public ownerAuthority(_idOfCertificate) view returns(uint id, address owner, string name, address createBy, string certificateIPFS){
+            Certificate memory temp = certificateList[_idOfCertificate];
+            return (temp.id, temp.owner, temp.name, temp.createBy, temp.certificateIPFS);
+        
+    }
+    
+    function sharedCerts() public view returns(string numbers){
+            for (uint i = 0; i < shareList[msg.sender].length; i++){
+                 string memory temp = uintToString(shareList[msg.sender][i]);
+                 numbers = numbers.toSlice().concat(temp.toSlice());
+            }
+            return numbers;
+    }
+    
     // ------------------------------- share ----------------------------------
     
-    function shareCert(address _receiver, uint _idOfCertificate) public {
+    function shareCert(address _receiver, uint _idOfCertificate) public ownerAuthority(_idOfCertificate){
         userList[msg.sender].shareCertificate[_idOfCertificate][_receiver] = 1;
         shareList[_receiver].push(_idOfCertificate);
     }
     
-    function unSshareCert(address _receiver, uint _idOfCertificate) public {
+    function unSshareCert(address _receiver, uint _idOfCertificate) public ownerAuthority(_idOfCertificate){
         userList[msg.sender].shareCertificate[_idOfCertificate][_receiver] = 0;
         for ( uint i = 0; i < shareList[_receiver].length; i++){
             if(shareList[_receiver][i] == _idOfCertificate){
@@ -127,25 +149,25 @@ contract CertificateManagement{
         }
     }
     
-    // function checkPublicl(int _check) public{
-    //     userList[msg.sender].checkPublic = _check;
-    // }
+    function checkPrivateOrPublic(int _check, uint _idOfCertificate) public ownerAuthority(_idOfCertificate){
+        certificateList[_idOfCertificate].checkPublic = _check;
+    }
     
-    function uintToString(uint v) constant returns (string str) {
-    uint maxlength = 100;
-    bytes memory reversed = new bytes(maxlength);
-    uint i = 0;
-    while (v != 0) {
-        uint remainder = v % 10;
-        v = v / 10;
-        reversed[i++] = byte(48 + remainder);
+    function uintToString(uint v) private constant returns (string str) {
+        uint maxlength = 100;
+        bytes memory reversed = new bytes(maxlength);
+        uint i = 0;
+        while (v != 0) {
+            uint remainder = v % 10;
+            v = v / 10;
+            reversed[i++] = byte(48 + remainder);
+        }
+        bytes memory s = new bytes(i);
+        for (uint j = 0; j < i; j++) {
+            s[j] = reversed[i - j - 1];
+        }
+        str = string(s);
     }
-    bytes memory s = new bytes(i);
-    for (uint j = 0; j < i; j++) {
-        s[j] = reversed[i - j - 1];
-    }
-    str = string(s);
-}
     
     
 }
