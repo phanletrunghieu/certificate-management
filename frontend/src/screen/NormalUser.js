@@ -10,14 +10,10 @@ import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-
+import browserHistory from "../utils/browserHistory";
 import SearchIcon from '@material-ui/icons/Search';
 
 const styles =({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
   input: {
     position: 'absolute',
     right: 100,
@@ -68,7 +64,14 @@ const styles =({
 });
 
 
+
+
+
 export default class UserNormal extends Component {
+
+  onClickDetail() {
+    browserHistory.push("/certificate/detail")
+  }
   render() {
     return (
       <div>
@@ -111,9 +114,9 @@ export default class UserNormal extends Component {
  
             <div style={styles.rightpage} >
          
-               <Certificate style={styles.componentss} image="http://cafefcdn.com/thumb_w/650/2017/that-vaou-1494304227253.png" text="bằng lái xe"/>
+               <Certificate onClick={this.onClickDetail} style={styles.componentss} image="http://cafefcdn.com/thumb_w/650/2017/that-vaou-1494304227253.png" text="bằng lái xe"/>
            
-               <Certificate style={styles.componentss} image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqdj4ohtcHPi1KSATYtnpvXHNHC5asfYeZfNKQrSQNEhwSmXdn" text="cmnd"/>
+               <Certificate onClick={this.onClickDetail} style={styles.componentss} image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqdj4ohtcHPi1KSATYtnpvXHNHC5asfYeZfNKQrSQNEhwSmXdn" text="cmnd"/>
                        
             </div>
         </div>    

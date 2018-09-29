@@ -4,6 +4,7 @@ import browserHistory from "./utils/browserHistory";
 import HomeScreen from "./screen/Home"
 import StaffScreen from "./screen/Staff"
 import NormalUserScreen from "./screen/NormalUser"
+import CertificateDetailScreen from"./screen/CertificateDetail"
 import './App.css';
 
 class App extends Component {
@@ -14,6 +15,7 @@ class App extends Component {
           <Route exact path="/" component={HomeScreen} />
           <Route path="/staff" component={StaffScreen} />
           <Route path="/normal-user" component={NormalUserScreen} />
+          <Route path="/certificate/detail" component={CertificateDetailScreen} />
         </div>
       </Router>
     );
