@@ -2,6 +2,8 @@
 //--------------------------------------------------------------------------------------
 pragma solidity ^0.4.25;
 
+import "github.com/Arachnid/solidity-stringutils/strings.sol";
+
 contract CertificateManagement{
     
     uint CertificateID = 0;
@@ -19,12 +21,15 @@ contract CertificateManagement{
         address owner;
         string name;
         address createBy;
-        string content;
-        string imgIPFS;
+        string certificateIPFS;
     }
     
     constructor() public payable{
         ownerOfSmartContract = msg.sender;
+        superUserList[msg.sender].createBy = msg.sender;
+        superUserList[msg.sender].nameOfUser = "_name";
+        superUserList[msg.sender].position = "_position";
+        superUserList[msg.sender].uploadPermission = true;
     }
 
     
@@ -34,7 +39,7 @@ contract CertificateManagement{
     
     // check super user
     modifier superUserAuthority(){
-        SuperUser storage authority = superUserList[msg.sender];
+        SuperUser memory authority = superUserList[msg.sender];
         require( authority.createBy != 0);
       _;
     }
@@ -64,19 +69,32 @@ contract CertificateManagement{
     }
     
     
-    function uploadCertificate(address _owner, string _name, string _content, string _imgIPFS) public superUserAuthorityPermission{
+    function uploadCertificate(address _owner, string _name, string _certificateIPFS) public superUserAuthorityPermission{
         uint _id = CertificateID + 1;
-        Certificate memory cert = Certificate(_id ,_owner, _name, msg.sender, _content, _imgIPFS);
+        Certificate memory cert = Certificate(_id ,_owner, _name, msg.sender, _certificateIPFS);
         certificateList[_owner].push(cert);
+    }
+    
+    function getSuperUser(address _address) view public returns(address _createBy, string _nameOfUser, string _position, bool _uploadPermission){
+            return (superUserList[_address].createBy, superUserList[_address].nameOfUser, superUserList[_address].position, superUserList[_address].uploadPermission);
+    }
+    
+    function getNormalUser() view public returns(string _listCertificate){
+        Certificate[] memory temp = certificateList[msg.sender];
+        for(uint i = 0; i < temp.length; i++){
+            string storage certs = temp[i].id temp[i].owner temp[i].name temp[i].createBy temp[i].certificateIPFS
+            
+        }
+        certificateList[msg.sender]
     }
     
     function getCertificate(uint _idOfCertificate, address _CertificateOwnerAddress)
     public addressPermissionAuthority(_idOfCertificate)
-    view returns(uint id, address owner, string name, address createBy, string content, string imgIPFS){
+    view returns(uint id, address owner, string name, address createBy, string certificateIPFS){
         Certificate[] memory temp = certificateList[_CertificateOwnerAddress];
-        for ( uint i = 0; i<temp.length; i++){
+        for ( uint i = 0; i < temp.length; i++){
             if(temp[i].id == _idOfCertificate){
-                return (temp[i].id, temp[i].owner, temp[i].name, temp[i].createBy, temp[i].content, temp[i].imgIPFS);
+                return (temp[i].id, temp[i].owner, temp[i].name, temp[i].createBy, temp[i].certificateIPFS);
             }
         }
     }
