@@ -11,7 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import ShareIcon from '@material-ui/icons/Share';
 import Icon from '@material-ui/core/Icon';
 
-
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
 const styles = {
   card: {
@@ -28,30 +30,51 @@ const styles = {
     fontSize: "25px",
     textAlign: "center"
   },
-  button: {
+  checkboxs: {
     position: 'absolute',
     top : 0,
     right: 0,
     zIndex: 15,
   },
+
 };
 
 export default class Certificate extends Component {
+
+  state = {
+    checkedA: true,
+    checkedA: false,
+  };
+
+
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.checked });
+  };
+
+
   render() {
     return (
       // variant="fab" nền button
-      <Card style={{...styles.card, ...this.props.style}}>
-        <Button  color="black" style={styles.button}>
-          <ShareIcon/>
-        </Button>
+   <Card style={{...styles.card, ...this.props.style}}>
 
-        <CardActionArea>
-          <img style={styles.media} src={this.props.image}/> 
-          <div style={styles.text}>
-            {this.props.text}
-          </div>
-        </CardActionArea>
-      </Card>
+      <Checkbox
+        style={styles.checkboxs}
+
+         checked={this.state.checkedB}
+         onChange={this.handleChange('checkedA')}
+         value="checkedG"
+         
+        />
+        
+
+
+     <CardActionArea> 
+       <img onClick={this.props.onClick} style={styles.media} src={this.props.image}/> 
+        <div style={styles.text}>
+          {this.props.text}
+        </div>
+     </CardActionArea>
+    </Card>
       
     )
   }
