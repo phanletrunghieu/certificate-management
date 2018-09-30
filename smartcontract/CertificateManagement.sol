@@ -92,10 +92,10 @@ contract CertificateManagement{
     // --------------- upload Certificate -------------------------------------
     
     function uploadCertificate(address _owner, string _name, string _certificateIPFS) public superUserAuthorityPermission{
-        uint _id = CertificateID + 1;
-        Certificate memory cert = Certificate(_id ,_owner, _name, msg.sender, _certificateIPFS, 0);
-        certificateList[_id] = cert;
-        userList[_owner].userCertificates.push(_id);
+        CertificateID = CertificateID + 1;
+        Certificate memory cert = Certificate(CertificateID ,_owner, _name, msg.sender, _certificateIPFS, 0);
+        certificateList[CertificateID] = cert;
+        userList[_owner].userCertificates.push(CertificateID);
     }
     
     // -----------------get Super user information ----------------------------
@@ -116,11 +116,13 @@ contract CertificateManagement{
     }
     
     function userCerts(address _CertificateOwnerAddress) public view returns(string numbers){
-        if (_CertificateOwnerAddress == msg.sender || superUserList[_CertificateOwnerAddress].createBy == msg.sender){
+        if (_CertificateOwnerAddress == msg.sender || superUserList[msg.sender].createBy != 0){
+            string memory sep = "|";
 
             for (uint i = 0; i < userList[_CertificateOwnerAddress].userCertificates.length; i++){
                  string memory temp = uintToString(userList[_CertificateOwnerAddress].userCertificates[i]);
                  numbers = numbers.toSlice().concat(temp.toSlice());
+                 numbers = numbers.toSlice().concat(sep.toSlice());
             }
             return numbers;
             
