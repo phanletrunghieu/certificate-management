@@ -71,13 +71,13 @@ export default class CertificateDetailScreen extends Component{
                         <img style={styles.images} src="http://cafefcdn.com/thumb_w/650/2017/that-vaou-1494304227253.png"/> 
                     </div>
                     <div style={styles.texts}>
-                        Information:
+                        Information: Bui Bao Hung
                     </div>
                     <div style={styles.texts}>
-                        Granted By:
+                        Granted By: Nguyen XXX
                     </div>
                     <div style={styles.texts}> 
-                        Expire:
+                        Expire: 19-09-2019
                     </div>
                     <div></div>
                 </div>    
