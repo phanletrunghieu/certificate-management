@@ -69,6 +69,11 @@ contract CertificateManagement{
         require(msg.sender == certificateList[_idOfCertificate].owner);
         _;
     }
+
+    function deleteSuperUser(address _address) public{
+        require(superUserList[_address].createBy == msg.sender);
+        delete superUserList[_address];
+    }
         
     function superUserAuthorityFunc(address _CertificateOwnerAddress) public view returns(bool){
         SuperUser memory authority = superUserList[_CertificateOwnerAddress];
