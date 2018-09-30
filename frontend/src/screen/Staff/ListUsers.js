@@ -4,22 +4,36 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Loading from '../../components/Loading'
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Checkbox from '@material-ui/core/Checkbox';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import AddUserDialog from './AddUserDialog'
-import {getListSuperUserCreated} from '../../api/user'
+import {getListSuperUserCreated, deleteUser} from '../../api/user'
 
 export default class ListUsers extends Component {
     state = {
-        users: []
+        users: [],
+        errorMessage: ""
+    }
+
+    constructor(props){
+        super(props)
+
+        this.loadData = this.loadData.bind(this)
+        this.delete = this.delete.bind(this)
     }
 
     componentWillMount(){
+        this.loadData()
+    }
+
+    loadData(){
         this.setState({isLoading: true})
         getListSuperUserCreated()
         .then(users=>{
@@ -31,6 +45,17 @@ export default class ListUsers extends Component {
             })
         })
         .catch(error=>this.setState({isLoading: false, errorMessage: error.message || error.toString()}))
+    }
+
+    delete(user){
+        if(window.confirm("You want to delete?")){
+            this.setState({isLoading: true})
+            deleteUser(user.address)
+            .then(()=>{
+                this.setState({isLoading: false})
+            })
+            .catch(error=>this.setState({isLoading: false, errorMessage: error.message || error.toString()}))
+        }
     }
 
     render() {
@@ -78,7 +103,7 @@ export default class ListUsers extends Component {
                                 />
                                 </TableCell>
                                 <TableCell style={styles.tableCell}>
-                                    <IconButton>
+                                    <IconButton onClick={e=>this.delete(user)}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </TableCell>
@@ -97,7 +122,14 @@ export default class ListUsers extends Component {
                     <AddIcon />
                 </Button>
 
+                <Snackbar
+                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    open={this.state.errorMessage !== ""}
+                    onClose={()=>this.setState({errorMessage: ""})}
+                    message={this.state.errorMessage}
+                />
                 <AddUserDialog ref={r=>this._dialogAdd = r} />
+                <Loading show={this.state.isLoading} />
             </Paper>
         )
     }

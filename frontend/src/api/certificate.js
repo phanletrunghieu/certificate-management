@@ -5,6 +5,10 @@ import { rejects } from "assert";
 import waitForMined from '../utils/waitForMined'
 
 export function listCertificate(address){
+    if(!address){
+        address = config.web3.eth.defaultAccount
+    }
+
     return new Promise((resolve, rejects)=>{
         try {
             config.contract.instance.userCerts(address, (error, result)=>{
@@ -12,11 +16,16 @@ export function listCertificate(address){
                     throw error
                 }
                 
+                if(result.length === 0){
+                    return resolve([])
+                }
+                
+                result = result.substring(0, result.length-1)
                 let certIDs = result.split("|")
                 let listP = []
-
                 certIDs.forEach(cert => {
                     let p = new Promise((resolve, rejects)=>{
+                        console.log(certIDs, cert, address);
                         config.contract.instance.getUserCertificate(cert, address, (error, c)=>{
                             if(error){
                                 return rejects(error)
@@ -38,6 +47,8 @@ export function listCertificate(address){
 
                     listP.push(p)
                 });
+
+                console.log("listP", listP);
 
                 Promise.all(listP)
                 .then(certs=>resolve(certs))

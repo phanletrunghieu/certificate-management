@@ -239,6 +239,20 @@
 		"constant": false,
 		"inputs": [
 			{
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "deleteSuperUser",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
 				"name": "_check",
 				"type": "int256"
 			},

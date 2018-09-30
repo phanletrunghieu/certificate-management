@@ -30,7 +30,7 @@ const styles = {
     fontSize: "25px",
     textAlign: "center"
   },
-  checkboxs: {
+  button: {
     position: 'absolute',
     top : 0,
     right: 0,
@@ -41,14 +41,10 @@ const styles = {
 
 export default class Certificate extends Component {
 
-  state = {
-    checkedA: true,
-    checkedA: false,
-  };
-
-
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.checked });
+  share = event => {
+    if(this.props.onClickShare){
+      this.props.onClickShare()
+    }
   };
 
 
@@ -56,15 +52,9 @@ export default class Certificate extends Component {
     return (
       // variant="fab" nền button
    <Card style={{...styles.card, ...this.props.style}}>
-
-      <Checkbox
-        style={styles.checkboxs}
-
-         checked={this.state.checkedB}
-         onChange={this.handleChange('checkedA')}
-         value="checkedG"
-         
-        />
+      <Button color="inherit" style={styles.button} onClick={this.share}>
+        <ShareIcon/>
+      </Button>
         
 
 

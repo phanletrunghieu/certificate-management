@@ -39,6 +39,30 @@ export function addUser(address, name, position, canCreateCert){
     })
 }
 
+export function deleteUser(address){
+    return new Promise((resolve, rejects)=>{
+        try {
+            config.contract.instance.deleteSuperUser.sendTransaction(address, {
+                to: config.contract.address
+            }, (error, hash)=>{
+                if(error){
+                    throw error
+                }
+                
+                waitForMined(hash)
+                .then(()=>{
+                    resolve(hash)
+                })
+                .catch(err => {
+                    throw err
+                })
+            })
+        } catch (error) {
+            rejects(error)
+        }
+    })
+}
+
 export function getListSuperUserCreated(address) {
     return new Promise((resolve, rejects)=>{
         try {

@@ -113,7 +113,7 @@ contract CertificateManagement{
     // --------------------------- get Certificate -----------------------------
     function getUserCertificate(uint _idOfCertificate, address _CertificateOwnerAddress) public
     view returns(uint id, address owner, string name, address createBy, string certificateIPFS){
-        if (_CertificateOwnerAddress == msg.sender || superUserList[_CertificateOwnerAddress].createBy == msg.sender){
+        if (_CertificateOwnerAddress == msg.sender || superUserList[msg.sender].createBy != 0){
             Certificate memory temp = certificateList[_idOfCertificate];
             return (temp.id, temp.owner, temp.name, temp.createBy, temp.certificateIPFS);
         }

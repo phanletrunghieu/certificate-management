@@ -26,6 +26,7 @@ export default class Certificates extends Component {
 
     loadCerts(){
         this.setState({isLoading: true})
+        
         listCertificate(this.address)
         .then(listCerts=>{
             console.log(listCerts);
