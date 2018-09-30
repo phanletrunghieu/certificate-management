@@ -69,12 +69,14 @@ contract CertificateManagement{
         _;
     }
         
-    function superUserAuthorityFunc(address _CertificateOwnerAddress) public view returns(int check){
+    function superUserAuthorityFunc(address _CertificateOwnerAddress) public view returns(bool){
         SuperUser memory authority = superUserList[_CertificateOwnerAddress];
-        require( authority.createBy != 0);
-        return check = 1;
+        return authority.createBy != 0;
     }
 
+    // function getSuperUserList() superUserAuthority(){
+        
+    // }
     // ---------------- register super user -----------------------------------
     
     function register(address _address, string _name, string _position, bool _uploadPermission) public superUserAuthority{
@@ -104,15 +106,15 @@ contract CertificateManagement{
     // --------------------------- get Certificate -----------------------------
     function getUserCertificate(uint _idOfCertificate, address _CertificateOwnerAddress) public
     view returns(uint id, address owner, string name, address createBy, string certificateIPFS){
-        if (_CertificateOwnerAddress == msg.sender || superUserList[_CertificateOwnerAddress].createBy == msg.sender || userList[_CertificateOwnerAddress].shareCertificate[_idOfCertificate][msg.sender] == 1){
+        if (_CertificateOwnerAddress == msg.sender || superUserList[_CertificateOwnerAddress].createBy == msg.sender){
             Certificate memory temp = certificateList[_idOfCertificate];
             return (temp.id, temp.owner, temp.name, temp.createBy, temp.certificateIPFS);
         }
         revert();
     }
     
-    function userCerts(uint _idOfCertificate, address _CertificateOwnerAddress) public view returns(string numbers){
-        if (_CertificateOwnerAddress == msg.sender || superUserList[_CertificateOwnerAddress].createBy == msg.sender || userList[_CertificateOwnerAddress].shareCertificate[_idOfCertificate][msg.sender] == 1){
+    function userCerts(address _CertificateOwnerAddress) public view returns(string numbers){
+        if (_CertificateOwnerAddress == msg.sender || superUserList[_CertificateOwnerAddress].createBy == msg.sender){
 
             for (uint i = 0; i < userList[_CertificateOwnerAddress].userCertificates.length; i++){
                  string memory temp = uintToString(userList[_CertificateOwnerAddress].userCertificates[i]);
