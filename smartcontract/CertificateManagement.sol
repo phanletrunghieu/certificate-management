@@ -48,6 +48,7 @@ contract CertificateManagement{
     mapping (address => SuperUser) superUserList;
     mapping (address => User) userList;
     mapping (address => uint[]) shareList;
+    mapping (address => address[]) registerList;
     
     // check super user
     modifier superUserAuthority(){
@@ -74,9 +75,9 @@ contract CertificateManagement{
         return authority.createBy != 0;
     }
 
-    // function getSuperUserList() superUserAuthority(){
-        
-    // }
+    function getSuperUserList() superUserAuthority() public view returns(address[]){
+        return registerList[msg.sender];
+    }
     // ---------------- register super user -----------------------------------
     
     function register(address _address, string _name, string _position, bool _uploadPermission) public superUserAuthority{
@@ -84,6 +85,7 @@ contract CertificateManagement{
         superUserList[_address].nameOfUser = _name;
         superUserList[_address].position = _position;
         superUserList[_address].uploadPermission = _uploadPermission;
+        registerList[msg.sender].push(_address);
         
     }
     
