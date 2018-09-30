@@ -10,19 +10,16 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Snackbar from '@material-ui/core/Snackbar';
-import Loading from '../../components/Loading'
-import config from '../../config'
-import waitForMined from '../../utils/waitForMined'
-import {addUser} from '../../api/user'
+import Loading from '../../../components/Loading'
+import config from '../../../config'
+import waitForMined from '../../../utils/waitForMined'
+import {addCertificate} from '../../../api/certificate'
 
-export default class AddUserDialog extends Component {
+export default class AddCertificateDialog extends Component {
     state = {
         open: false,
         isLoading: false,
-        address: "",
         name: "",
-        position: "",
-        canCreateCert: false,
         errorMessage: ""
     }
 
@@ -44,16 +41,13 @@ export default class AddUserDialog extends Component {
 
     resetState(){
         this.setState({
-            address: "",
             name: "",
-            position: "",
-            canCreateCert: false,
         })
     }
 
     save(){
         this.setState({isLoading: true})
-        addUser(this.state.address, this.state.name, this.state.position, this.state.canCreateCert)
+        addCertificate(this.props.address, this.state.name, "fsdfdfssd")
         .then(hash=>{
             this.setState({isLoading: false})
             this.close()
@@ -75,29 +69,12 @@ export default class AddUserDialog extends Component {
                     onClose={()=>this.setState({open: false})}
                     aria-labelledby="dialog-title"
                 >
-                    <DialogTitle id="dialog-title">Add new staff</DialogTitle>
+                    <DialogTitle id="dialog-title">Add new certificate</DialogTitle>
                     <DialogContent>
                         <FormControl style={styles.formControl}>
                             <InputLabel htmlFor="input-name">Name</InputLabel>
                             <Input id="input-name" value={this.state.name} onChange={(e)=>this.setState({name: e.target.value})}/>
                         </FormControl>
-                        <FormControl style={styles.formControl}>
-                            <InputLabel htmlFor="input-address">Address</InputLabel>
-                            <Input id="input-address" value={this.state.address} onChange={(e)=>this.setState({address: e.target.value})}/>
-                        </FormControl>
-                        <FormControl style={styles.formControl}>
-                            <InputLabel htmlFor="input-position">Position</InputLabel>
-                            <Input id="input-position" value={this.state.position} onChange={(e)=>this.setState({position: e.target.value})}/>
-                        </FormControl>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={this.state.canCreateCert}
-                                    onChange={(e)=>this.setState({canCreateCert: e.target.checked})}
-                                />
-                            }
-                            label="Can create certificate"
-                        />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.close} color="primary">

@@ -1,0 +1,281 @@
+[
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_idOfCertificate",
+				"type": "uint256"
+			},
+			{
+				"name": "_CertificateOwnerAddress",
+				"type": "address"
+			}
+		],
+		"name": "getUserCertificate",
+		"outputs": [
+			{
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "createBy",
+				"type": "address"
+			},
+			{
+				"name": "certificateIPFS",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "getSuperUser",
+		"outputs": [
+			{
+				"name": "_createBy",
+				"type": "address"
+			},
+			{
+				"name": "_nameOfUser",
+				"type": "string"
+			},
+			{
+				"name": "_position",
+				"type": "string"
+			},
+			{
+				"name": "_uploadPermission",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_receiver",
+				"type": "address"
+			},
+			{
+				"name": "_idOfCertificate",
+				"type": "uint256"
+			}
+		],
+		"name": "unSshareCert",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_receiver",
+				"type": "address"
+			},
+			{
+				"name": "_idOfCertificate",
+				"type": "uint256"
+			}
+		],
+		"name": "shareCert",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "sharedCerts",
+		"outputs": [
+			{
+				"name": "numbers",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_idOfCertificate",
+				"type": "uint256"
+			}
+		],
+		"name": "getSharedCertificate",
+		"outputs": [
+			{
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "createBy",
+				"type": "address"
+			},
+			{
+				"name": "certificateIPFS",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_CertificateOwnerAddress",
+				"type": "address"
+			}
+		],
+		"name": "userCerts",
+		"outputs": [
+			{
+				"name": "numbers",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_owner",
+				"type": "address"
+			},
+			{
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"name": "_certificateIPFS",
+				"type": "string"
+			}
+		],
+		"name": "uploadCertificate",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_address",
+				"type": "address"
+			},
+			{
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"name": "_position",
+				"type": "string"
+			},
+			{
+				"name": "_uploadPermission",
+				"type": "bool"
+			}
+		],
+		"name": "register",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getSuperUserList",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_check",
+				"type": "int256"
+			},
+			{
+				"name": "_idOfCertificate",
+				"type": "uint256"
+			}
+		],
+		"name": "checkPrivateOrPublic",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_CertificateOwnerAddress",
+				"type": "address"
+			}
+		],
+		"name": "superUserAuthorityFunc",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "constructor"
+	}
+]

@@ -9,34 +9,30 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import AddUserDialog from './AddUserDialog'
+import {getListSuperUserCreated} from '../../api/user'
 
 export default class ListUsers extends Component {
     state = {
-        users: [
-            {
-                name: "Hieu Dep Trai",
-                address: "0x030243249230493894398908093909",
-                date_created: new Date().toString()
-            },
-            {
-                name: "Hieu Dep Trai",
-                address: "0x030243249230493894398908093909",
-                date_created: new Date().toString()
-            },
-            {
-                name: "Hieu Dep Trai",
-                address: "0x030243249230493894398908093909",
-                date_created: new Date().toString()
-            },
-            {
-                name: "Hieu Dep Trai",
-                address: "0x030243249230493894398908093909",
-                date_created: new Date().toString()
-            },
-        ]
+        users: []
     }
+
+    componentWillMount(){
+        this.setState({isLoading: true})
+        getListSuperUserCreated()
+        .then(users=>{
+            console.log(users);
+
+            this.setState({
+                isLoading: false,
+                users: users
+            })
+        })
+        .catch(error=>this.setState({isLoading: false, errorMessage: error.message || error.toString()}))
+    }
+
     render() {
         let styles = {
             container: {
@@ -63,7 +59,8 @@ export default class ListUsers extends Component {
                         <TableRow>
                             <TableCell>Name</TableCell>
                             <TableCell>Address</TableCell>
-                            <TableCell>Date created</TableCell>
+                            <TableCell>Position</TableCell>
+                            <TableCell>Create certificate permission</TableCell>
                             <TableCell>Action</TableCell>
                         </TableRow>
                     </TableHead>
@@ -72,7 +69,14 @@ export default class ListUsers extends Component {
                             <TableRow key={index}>
                                 <TableCell component="th" scope="row" style={styles.tableCell}>{user.name}</TableCell>
                                 <TableCell style={styles.tableCell}>{user.address}</TableCell>
-                                <TableCell style={styles.tableCell}>{user.date_created}</TableCell>
+                                <TableCell style={styles.tableCell}>{user.position}</TableCell>
+                                <TableCell style={styles.tableCell}>
+                                <Checkbox
+                                    color="primary"
+                                    checked={user.uploadPermission}
+                                    // onChange={this.handleChange('checkedA')}
+                                />
+                                </TableCell>
                                 <TableCell style={styles.tableCell}>
                                     <IconButton>
                                         <DeleteIcon />

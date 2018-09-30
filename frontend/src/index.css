@@ -21,3 +21,18 @@ body {
   transform: scale(1.2);
   opacity: 0.6;
 }
+
+.ani-rotate{
+  animation-name: rotate;
+  animation-duration: 70s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(360deg);
+  }
+}

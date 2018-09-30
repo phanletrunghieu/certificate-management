@@ -69,7 +69,7 @@ export default class Certificate extends Component {
 
 
      <CardActionArea> 
-       <img onClick={this.props.onClick} style={styles.media} src={this.props.image}/> 
+       <img onClick={this.props.onClick} style={styles.media} src={this.props.image || "https://material-ui.com/static/images/grid-list/breakfast.jpg"}/> 
         <div style={styles.text}>
           {this.props.text}
         </div>

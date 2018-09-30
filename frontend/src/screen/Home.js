@@ -2,12 +2,15 @@ import React, { Component } from 'react'
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
+import Snackbar from '@material-ui/core/Snackbar';
 import {IsMetaMaskEnabled, GetWeb3Instance} from "../utils/web3"
 import browserHistory from "../utils/browserHistory";
+import {isSuperUser} from "../api/user"
 
 export default class HomeScreen extends Component {
   state = {
     openLoginDialog: false,
+    errorMessage: ""
   }
 
   constructor(props){
@@ -17,7 +20,15 @@ export default class HomeScreen extends Component {
   }
 
   login(){
-    this.setState({openLoginDialog: true})
+    isSuperUser()
+    .then(is=>{
+      if(is){
+        this.setState({openLoginDialog: true})
+      } else {
+        this.onClickNormalUser()
+      }
+    })
+    .catch(err=>this.setState({errorMessage: err}))
   }
 
   onClickStaff(){
@@ -69,6 +80,13 @@ export default class HomeScreen extends Component {
       subcontainer: {
         display: "table-cell",
         verticalAlign: "middle",
+        position: "relative",
+      },
+      bgImage: {
+        position: "absolute",
+        right: 0,
+        top: 80,
+        width: "45%"
       }
     }
 
@@ -92,6 +110,9 @@ export default class HomeScreen extends Component {
               >
                 Get started!
               </Button>
+              <div style={styles.bgImage} className="ani-rotate">
+                <img style={{width: "100%"}} src="http://sv1.upsieutoc.com/2018/09/30/Untitled.png" alt="background" />
+              </div>
             </div>
           </div>
 
@@ -115,6 +136,13 @@ export default class HomeScreen extends Component {
               </Button>
             </DialogContent>
           </Dialog>
+
+          <Snackbar
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            open={this.state.errorMessage !== ""}
+            onClose={()=>this.setState({errorMessage: ""})}
+            message={this.state.errorMessage}
+          />
         </div>
     )
   }
